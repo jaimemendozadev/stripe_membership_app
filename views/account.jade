@@ -17,20 +17,15 @@ block append content
             h3 #{'$' + (product.amount / 100).toFixed(2)}
             form(action='/purchase', method='POST', class='purchase_form')
               input(type='hidden', name='_id', value=product._id)
-              div.input
-                span.label Credit Card Number:
-                input(type='text', data-stripe='exp-month', size='16')
+
+              label(for='card-element')
               
-              div.input
-                span.label Expiration Month:
-                input(type='text', data-stripe='exp-month', size='2')
-                span.label Year:
-                input(type='text', data-stripe='exp-year', size='2')
-              
-              div.input
-                span.label CVC:
-                input(type='text', data-stripe='cvc', size='4')
-              input(type='submit', value='Purchase!')
+              //- a Stripe Element will be inserted here.
+              div#card-element
+
+              //- Used to display Element errors 
+              div#card-errors(role='alert')
+                
           else
             h3 Purchased!
             a(href=product.downloadURL) Download Here
