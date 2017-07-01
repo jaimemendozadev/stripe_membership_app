@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,11 +6,22 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var db = require('./db');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+
+var MongoStore = require('connect-mongo')(session);
+
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({ mongooseConnection: db})
+}));
 
 
 // view engine setup

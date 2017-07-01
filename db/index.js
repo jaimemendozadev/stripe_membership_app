@@ -1,24 +1,20 @@
-var app = require('./app.js');
 var mongoose = require('mongoose');
 var mongoDB = process.env.DATABASE_URL;
+console.log("mongoDB is ", mongoDB);
 mongoose.connect(mongoDB);
 
 var db = mongoose.connection;
 
-var MongoStore = require('connect-mongo')(session);
-
-app.use(session({
-  secret: process.env.SECRET,
-  resave: false,
-  saveUnitialized: false,
-  store: new MongoStore({ mongooseConnection: db})
-}));
-
 // CONNECTION EVENTS
 // When successfully connected
-db.on('connected', function () {  
+db.on('open', function () {  
   console.log('Mongoose default connection open');
 }); 
+
+// Seed the database 
+if (process.env.NODE_ENV === 'development') {   
+  require('./models/seeds/product.js')(); 
+}
 
 // If the connection throws an error
 db.on('error',function (err) {  

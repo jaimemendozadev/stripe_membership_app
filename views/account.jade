@@ -2,4 +2,22 @@ extends index
 
 block append content
   h3 Account for #{email}
+  h2 #{message}
   a(href='/logout') Logout
+  h2 Available Products
+  hr
+  table
+    for product in products
+      tr
+        td
+          h3 #{product.name}
+          p #{product.description}
+        td
+          if product.amount
+            h3 #{'$' + (product.amount / 100).toFixed(2)}
+            form(action='/purchase', method='POST')
+              input(type='hidden', name='_id', value=product._id)
+              script(src='https://checkout.stripe.com/checkout.js', class='stripe-button', data-key='pk_test_uRzmnFDP58RQeTEq25nKkmRy', data-amount=product.amount, data-email=email)
+          else
+            h3 Purchased!
+            a(href=product.downloadURL) Download Here
