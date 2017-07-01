@@ -15,9 +15,22 @@ block append content
         td
           if product.amount
             h3 #{'$' + (product.amount / 100).toFixed(2)}
-            form(action='/purchase', method='POST')
+            form(action='/purchase', method='POST', class='purchase_form')
               input(type='hidden', name='_id', value=product._id)
-              script(src='https://checkout.stripe.com/checkout.js', class='stripe-button', data-key='pk_test_uRzmnFDP58RQeTEq25nKkmRy', data-amount=product.amount, data-email=email)
+              div.input
+                span.label Credit Card Number:
+                input(type='text', data-stripe='exp-month', size='16')
+              
+              div.input
+                span.label Expiration Month:
+                input(type='text', data-stripe='exp-month', size='2')
+                span.label Year:
+                input(type='text', data-stripe='exp-year', size='2')
+              
+              div.input
+                span.label CVC:
+                input(type='text', data-stripe='cvc', size='4')
+              input(type='submit', value='Purchase!')
           else
             h3 Purchased!
             a(href=product.downloadURL) Download Here
